@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Three practical Microsoft 365 Copilot labs for self-reflection, leadership development and thoughtful conversations. Includes entirely synthetic practice data.">
+  <title>People, practice &amp; possibility | Copilot hands-on</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to activity</a>
+  <header class="topbar">
+    <a class="brand" href="#welcome"><span class="brand-mark" aria-hidden="true">n.</span><span>THE PRACTICE LAB<small>Microsoft 365 Copilot · People &amp; leadership</small></span></a>
+    <div class="progress-group"><label for="progress" id="progress-label">0 of 3 labs complete</label><progress id="progress" max="3" value="0"></progress></div>
+  </header>
+  <div class="layout">
+    <aside class="rail">
+      <p class="eyebrow">Your field guide</p><h1>Better work.<br>Human judgment.</h1>
+      <nav aria-label="Activities">
+        <a href="#welcome" aria-current="step"><span>00</span>Start here<small>Prepare &amp; learn the pattern</small></a>
+        <a href="#review"><span>01</span>Tell your impact story<small>Quarterly self-review · 15 min</small></a>
+        <a href="#session"><span>02</span>Make leadership a practice<small>Session design · 20 min</small></a>
+        <a href="#conversation"><span>03</span>Practice the hard part<small>Conversation rehearsal · 15 min</small></a>
+        <a href="#wrap"><span>04</span>Take it into your work<small>Reflect &amp; transfer · 5 min</small></a>
+      </nav>
+      <div class="rail-note"><strong>Fictional by design.</strong><p>Northstar Retail is a fictional training organization. Every person, event and business figure in the practice files is synthetic.</p></div>
+      <button class="text-button" id="reset" type="button">Reset lab progress</button>
+    </aside>
+    <main id="main" tabindex="-1">
+      <section id="welcome" class="activity">
+        <div class="kicker">HANDS-ON / 60-MINUTE LEARNING PATH</div>
+        <h2>People, practice<br> &amp; <em>possibility.</em></h2>
+        <p class="lede">A little less blank page. A lot more thoughtful preparation. Explore three everyday people-and-leadership moments with Microsoft 365 Copilot.</p>
+        <div class="hero-strip"><span>3 practical labs</span><span>2 levels of depth</span><span>100% synthetic inputs</span></div>
+        <div class="outcomes">
+          <article><b>01 / REFLECT</b><h3>Tell a fair story.</h3><p>Turn evidence into your own quarterly self-review, without overstating impact.</p></article>
+          <article><b>02 / DESIGN</b><h3>Build a better room.</h3><p>Design a leadership session that turns discussion into working agreements.</p></article>
+          <article><b>03 / REHEARSE</b><h3>Find your words.</h3><p>Practice honest, empathetic feedback before the real conversation.</p></article>
+        </div>
+        <h3 class="section-title">Before you begin</h3>
+        <ol class="steps">
+          <li><strong>Open your work Copilot.</strong> Use your organization's approved Microsoft 365 Copilot experience with your work account. Keep this guide alongside it. No live tenant seeding, agents or connectors are required.</li>
+          <li><strong>Confirm the available route.</strong> The facilitator must verify licensing, tenant policy, enabled features and any usage budget before the session. Run only generally available features enabled for these participants. Do not demonstrate previews.</li>
+          <li><strong>Use only practice data.</strong> Each lab has a small TXT file. Download it, then attach it if your experience supports it. Otherwise open it and paste its full text into the chat before the prompt. Ask Copilot to acknowledge the source IDs.</li>
+          <li><strong>Choose your depth.</strong> Everyone starts with the core prompt. Experienced participants can challenge the evidence or use the optional Cowork route after the facilitator approves availability.</li>
+        </ol>
+        <div class="note"><strong>Cowork is optional, not assumed.</strong> Microsoft Learn lists work/school Cowork as generally available and usage-based billing from June 2026. That is not confirmation of access or budget in your tenant. These labs use drafting and reasoning only; no browser automation, plugins, preview models or App skill. If Cowork is unavailable, run the staged prompts in standard Copilot Chat, one stage at a time.</div>
+        <h3 class="section-title">Four ingredients. One accountable human.</h3>
+        <div class="formula"><div><b>Goal</b><span>What should change?</span></div><div><b>Context</b><span>For whom, and when?</span></div><div><b>Source</b><span>What can we trust?</span></div><div><b>Expectations</b><span>What does good look like?</span></div></div>
+        <p>Then verify. A fluent answer is not evidence. Open the supplied source, check the dates and numbers, and retain uncertainty labels.</p>
+        <a class="button primary" href="#review">Begin the first lab <span aria-hidden="true">→</span></a>
+      </section>
+
+      <section id="review" class="activity">
+        <div class="kicker">01 / REFLECT · 15 MINUTES</div>
+        <h2>Tell your<br> <em>impact story.</em></h2>
+        <p class="lede">Draft your quarterly self-review. Let the evidence do the talking; keep the judgment and voice your own.</p>
+        <div class="meta"><span>Core: Copilot Chat</span><span>Advanced: evidence audit / Cowork</span><span>Output: first-person self-review</span></div>
+        <div class="download"><div><strong>Your practice file</strong><p>Six months of context. One quarter to review. Deliberate evidence gaps.</p></div><a href="assets/self-review-evidence.txt" download>Download TXT ↓</a><button type="button" data-source="assets/self-review-evidence.txt">Copy source text</button></div>
+        <ol class="steps"><li><strong>Download → attach or paste.</strong> Start a new chat. Provide the complete self-review evidence file, including the review period and source IDs.</li><li><strong>Run → refine.</strong> Copy the core prompt below. Read the evidence map before accepting the draft.</li><li><strong>Verify → personalize.</strong> Check each claim against the IDs. Replace generic phrasing with your own voice; do not add unverified results.</li></ol>
+        <article class="prompt-card"><header><h3>Core prompt / evidence before eloquence</h3><button type="button" data-copy="review-core">Copy prompt</button></header><pre id="review-core">I need to draft my Q3 2026 self-review for Northstar Retail, covering July 1 through September 30, so I can discuss my contributions and growth with my manager.
+
+Use only the supplied synthetic self-review evidence file. April-June entries are background, not Q3 accomplishments. This is my first-person self-review, not a manager's assessment or an employee rating.
+
+First build a compact evidence map: contribution, date, my role, supported outcome, source ID, and limitation. Separate my work from team outcomes. Reconcile conflicting figures; do not choose a convenient number. Flag missing evidence as Needs validation.
+
+Then draft 350-450 words with: highest-impact contributions, collaboration, a challenge and what I learned, and two proposed next-quarter goals. Use a balanced, specific first-person voice. Quantify only supported outcomes; do not imply causation or invent financial savings. Cite source IDs next to factual claims. Keep unresolved items in a separate validation list, not disguised as achievements. Do not submit, save to an HR system, or share anything.</pre></article>
+        <article class="prompt-card compact"><header><h3>Challenge prompt / test the story</h3><button type="button" data-copy="review-challenge">Copy prompt</button></header><pre id="review-challenge">Audit this draft against the supplied evidence. Identify out-of-period credit, double counting, ambiguous attribution, unsupported causation and conflicting metrics. For each issue, show the claim, source IDs and a safer rewrite. Distinguish a development goal from an achieved result. Revise the self-review only after showing the audit.</pre></article>
+        <details><summary>Advanced / Cowork starting prompt</summary><p>Only after the facilitator confirms GA feature access and budget. Provide the same source file first. Otherwise run each stage in Copilot Chat.</p><article class="prompt-card"><header><h3>Build a review-ready package</h3><button type="button" data-copy="review-cowork">Copy prompt</button></header><pre id="review-cowork">I need a review-ready Q3 2026 self-review package for my own reflection at Northstar Retail.
+
+1. Bound the quarter. Read only the supplied synthetic evidence file. Confirm July 1-September 30 as the review period and isolate April-June context. Name the sources you can actually read; stop and request the file if missing.
+2. Reconcile my contribution. Build an evidence ledger with source IDs, dates, my contribution versus team contribution, supported outcomes, conflicting metrics and missing proof. Do not invent facts or quantify unsupported benefits.
+3. Build the package in this conversation. Draft a 350-450 word first-person self-review, a claim-to-evidence table and a short manager-discussion agenda. Include learning and two proposed next-quarter goals, clearly separate from achievements.
+4. Quality-check. Audit period boundaries, attribution and numbers. List unresolved questions and the evidence I need to answer them.
+
+Keep Needs validation labels. This is not an employee rating or employment decision. Prepare text only. Do not save, send, share, submit or write back without my separate explicit approval for each action.</pre></article></details>
+        <div class="verify"><h3>What good looks like</h3><ul><li>R01 is prior-quarter context, not a Q3 achievement.</li><li>R03's 120 and R04's 112 are not interchangeable: use 112 verified completions, disclose the discrepancy.</li><li>R05 supports a team-level trend, not a causal claim or invented savings.</li><li>R07's pilot has no proven outcome yet; a proposed goal remains a proposal.</li></ul></div>
+        <p class="reflection"><strong>Reflect:</strong> Which sentence became more credible when you reduced its certainty?</p>
+        <label class="complete"><input type="checkbox" data-complete="review"> I verified the evidence and reviewed my self-review.</label>
+        <a class="button primary" href="#session">Next: design a session →</a>
+      </section>
+
+      <section id="session" class="activity">
+        <div class="kicker">02 / DESIGN · 20 MINUTES</div>
+        <h2>Make leadership<br> <em>a practice.</em></h2>
+        <p class="lede">Design a leadership effectiveness session for a senior team. Move from broad themes to a timed, usable facilitation plan.</p>
+        <div class="meta"><span>Core: Copilot Chat</span><span>Advanced: design critique / Cowork</span><span>Output: 90-minute facilitation plan</span></div>
+        <div class="download"><div><strong>Your practice file</strong><p>Team brief, learning notes and operational constraints. All fictional.</p></div><a href="assets/leadership-session-brief.txt" download>Download TXT ↓</a><button type="button" data-source="assets/leadership-session-brief.txt">Copy source text</button></div>
+        <ol class="steps"><li><strong>Download → attach or paste.</strong> Start a new chat and provide the leadership session file. These are fictional internal materials, not a real SharePoint source.</li><li><strong>Run → inspect the flow.</strong> Check that the proposed activities serve trust, decision-making and ways of working, rather than just filling time.</li><li><strong>Verify → adapt.</strong> Add the minutes. Check the room constraints, voluntary participation and the follow-through owner.</li></ol>
+        <article class="prompt-card"><header><h3>Core prompt / design for a useful outcome</h3><button type="button" data-copy="session-core">Copy prompt</button></header><pre id="session-core">I need a 90-minute leadership effectiveness session for the eight-person fictional Northstar Retail senior team, focused on trust, decision-making and ways of working.
+
+Use only the supplied synthetic team brief and learning notes L01-L05. Cite those IDs for constraints and design choices. Do not claim access to an internal learning portal or SharePoint. Separate fictional internal guidance from any external framework. No web research is needed.
+
+Produce: three observable learning objectives; a timed agenda totaling exactly 90 minutes including opening, transitions and closing; and 3-4 activities with purpose, instructions, facilitator questions, materials, timing and a tangible output. Include a voluntary, non-diagnostic opening pulse and an exit check; do not represent either as a validated assessment.
+
+Offer a safe way to pass or contribute silently. Avoid forced personal disclosure, psychometric scoring or clinical diagnosis. Include a simple decision practice and a working-agreement exercise. End with a 30-day follow-through plan with proposed roles (not invented commitments), evidence of progress, and unresolved questions. Mark assumptions and explain why each activity fits the brief. Draft only; do not invite participants or publish materials.</pre></article>
+        <article class="prompt-card compact"><header><h3>Challenge prompt / make the session hold up</h3><button type="button" data-copy="session-challenge">Copy prompt</button></header><pre id="session-challenge">Stress-test the plan: do all minutes, including transitions, total 90? Are there exactly 3-4 activities? Where might a quieter participant be excluded or a power imbalance affect candor? Show one alternative to public disclosure. Check each design choice against L01-L05, then revise the weakest activity. Do not call the pulse a validated diagnostic.</pre></article>
+        <details><summary>Advanced / Cowork starting prompt</summary><p>Only with facilitator-confirmed GA access and usage budget; otherwise complete the stages in Copilot Chat.</p><article class="prompt-card"><header><h3>Build a facilitator-ready package</h3><button type="button" data-copy="session-cowork">Copy prompt</button></header><pre id="session-cowork">I need a facilitator-ready leadership effectiveness session for eight senior leaders at fictional Northstar Retail.
+
+1. Read the brief. Use only supplied L01-L05. Confirm purpose, audience, 90-minute limit, materials and safety boundaries. Ask for missing source content rather than pretending to access internal systems.
+2. Design the experience. Propose three observable objectives and 3-4 activities addressing trust, decision-making and ways of working. Include a voluntary, non-diagnostic pulse, silent contribution and a right to pass.
+3. Draft the package here. Provide a timed 90-minute agenda including transitions, a facilitator run sheet, participant instructions, working-agreement template and a proposed 30-day follow-through tracker. For each activity specify purpose, minutes, materials, questions and output. Cite source IDs.
+4. Audit the design. Sum the timings, check inclusion and power dynamics, and list assumptions and tradeoffs. Keep fictional internal guidance distinct from external frameworks. No psychometric or clinical interpretation.
+
+Use text in this conversation. Do not create calendar events, save files, send invitations, publish or share without my separate explicit approval for each action. Do not invent agreed owners or commitments.</pre></article></details>
+        <div class="verify"><h3>What good looks like</h3><ul><li>The full agenda totals 90 minutes, not 90 plus breaks.</li><li>Three or four activities produce concrete outputs, not just discussion.</li><li>The pulse measures participants' stated perceptions, not personality or psychological health.</li><li>Decisions have a proposed owner and revisit point; participants confirm their own commitments.</li></ul></div>
+        <p class="reflection"><strong>Reflect:</strong> What would you remove so the team has time to make one real agreement?</p>
+        <label class="complete"><input type="checkbox" data-complete="session"> I checked the timing, sources and inclusive participation.</label>
+        <a class="button primary" href="#conversation">Next: rehearse a conversation →</a>
+      </section>
+
+      <section id="conversation" class="activity">
+        <div class="kicker">03 / REHEARSE · 15 MINUTES</div>
+        <h2>Practice<br> <em>the hard part.</em></h2>
+        <p class="lede">A strong contributor. Slipped delivery. Prepare honest feedback without assuming the reason, then rehearse one turn at a time.</p>
+        <div class="meta"><span>Core: Copilot Chat</span><span>Advanced: adaptive rehearsal</span><span>Output: opening + practice + debrief</span></div>
+        <div class="download"><div><strong>Your practice file</strong><p>A hypothetical delivery conversation with observable facts and unknowns.</p></div><a href="assets/conversation-brief.txt" download>Download TXT ↓</a><button type="button" data-source="assets/conversation-brief.txt">Copy source text</button></div>
+        <ol class="steps"><li><strong>Download → attach or paste.</strong> Start a new chat. Provide the conversation brief. Keep the role-play fictional; do not enter real personnel information.</li><li><strong>Prepare → rehearse.</strong> Run the preparation prompt, review it, then run the rehearsal prompt. You play the leader; Copilot plays the contributor.</li><li><strong>Pause → debrief.</strong> After 3-5 exchanges, type DEBRIEF. Compare the feedback with the facts, not with a guessed motive.</li></ol>
+        <article class="prompt-card"><header><h3>Core prompt / prepare with empathy and clarity</h3><button type="button" data-copy="conversation-core">Copy prompt</button></header><pre id="conversation-core">I need to prepare for a hypothetical conversation with Morgan, a strong contributor whose recent delivery has slipped at fictional Northstar Retail.
+
+Use only the supplied synthetic conversation brief C01-C05. Separate observed facts from unknown causes. Do not infer motives, medical conditions, protected traits or personal circumstances.
+
+Recommend an honest, empathetic approach. Draft a 60-90 second opening using Situation-Behavior-Impact: a specific situation, observable behavior and supported work impact, followed by an open question. Cite source IDs in the preparation notes, not as unnatural spoken dialogue. Acknowledge strengths without weakening the delivery concern.
+
+Suggest three possible reactions as hypothetical, not predictions about Morgan, and a respectful response to each. Include questions to understand barriers, support options within the brief, and a proposed mutual delivery checkpoint. Do not invent agreement or escalate to disciplinary action. This is preparation, not an automated employment decision. Do not send or record anything in a personnel system.</pre></article>
+        <article class="prompt-card"><header><h3>Rehearsal prompt / one turn at a time</h3><button type="button" data-copy="conversation-rehearse">Copy prompt</button></header><pre id="conversation-rehearse">Let's rehearse using the same fictional brief. I am the leader; you play Morgan. Begin by asking me to give my opening, then STOP and wait for my reply.
+
+After each of my messages, respond only as Morgan in 1-3 sentences and wait. Do not write my lines, give coaching during the role-play or run the entire conversation at once. Use only the brief; if a detail is unknown, say so or label a new role-play detail hypothetical. Do not add medical or personal explanations.
+
+If I type PAUSE, stop role-playing and help me rephrase. If I type DEBRIEF, end the role-play and coach me on specificity, empathy, listening and mutual next steps. Quote examples from my actual words, identify one improvement and give a revised opening. Do not score my suitability for employment or make personnel recommendations.</pre></article>
+        <details><summary>Advanced / introduce a realistic challenge</summary><article class="prompt-card"><header><h3>Practice listening, not winning</h3><button type="button" data-copy="conversation-advanced">Copy prompt</button></header><pre id="conversation-advanced">Restart the role-play. Use one hypothetical challenge: Morgan disagrees about the impact or asks for clearer priorities. Do not invent new historical facts. Wait for my opening, then respond one turn at a time. Keep the goal a shared understanding and a realistic checkpoint, not winning an argument. When I type DEBRIEF, compare my original and revised approaches using my actual words and C01-C05. State what still needs to be asked rather than inferred.</pre></article></details>
+        <div class="note"><strong>Best tool for this moment:</strong> stay in an interactive chat. Multi-step delegation is useful for preparing a package; a rehearsal needs the human to speak and the assistant to wait. No additional usage-based product is required here.</div>
+        <div class="verify"><h3>What good looks like</h3><ul><li>The opening uses specific missed dates and their documented impact.</li><li>A possible reaction is labeled hypothetical, never treated as evidence.</li><li>The assistant waits after one turn and honors PAUSE and DEBRIEF.</li><li>Support and checkpoints are proposals until both people agree.</li></ul></div>
+        <p class="reflection"><strong>Reflect:</strong> Did your question make room to understand, or quietly assume the answer?</p>
+        <label class="complete"><input type="checkbox" data-complete="conversation"> I rehearsed and reviewed the debrief against the brief.</label>
+        <a class="button primary" href="#wrap">Finish: take it into your work →</a>
+      </section>
+
+      <section id="wrap" class="activity">
+        <div class="kicker">04 / TRANSFER · 5 MINUTES</div>
+        <h2>Better prepared.<br> <em>Still accountable.</em></h2>
+        <p class="lede">Copilot helps you get to a useful draft. You decide what is true, fair and appropriate to act on.</p>
+        <div class="outcomes"><article><b>VERIFY</b><h3>Trace the claim.</h3><p>Check dates, numbers, attribution and evidence gaps. Confidence is not proof.</p></article><article><b>PROTECT</b><h3>Respect the boundary.</h3><p>Use approved tools and permitted data. Training prompts are not permission to process personnel records.</p></article><article><b>OWN</b><h3>Make the decision.</h3><p>Review the words and next steps yourself. Never delegate an employment decision.</p></article></div>
+        <h3 class="section-title">Your next move</h3><p>Pick one workflow you can safely improve. Write its goal, audience, approved sources, output and review gate. Start with synthetic content; move to work data only under your organization's policies.</p>
+        <div class="reflection"><strong>Pair reflection:</strong> What changed the quality of your thinking, not just the speed of drafting? Share the learning, not personal or personnel content.</div>
+        <h3 class="section-title">Facilitator notes &amp; product sources</h3>
+        <p>Suggested pacing: 5-minute setup, three labs (15 / 20 / 15 minutes), 5-minute reflection. Core prompts support beginners; challenge prompts add depth without requiring additional products. All outputs are variable, so use the verification checklists rather than expecting an identical model answer.</p>
+        <p><strong>Preflight before every delivery:</strong> verify current GA status, participants' licenses, work-account access, file-input policy, enabled Cowork features and approved consumption limits. Test with the exact attendee experience. Skip a route if any gate fails. No preview functionality is part of this lab.</p>
+        <ul class="sources">
+          <li><a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/cowork/">Microsoft Learn: Cowork overview</a> — work/school GA status, supported task types and action controls.</li>
+          <li><a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/cowork/whats-new">Microsoft Learn: Cowork release notes</a> — June 2026 GA and usage-based billing; App skill remains Frontier.</li>
+          <li><a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/cowork/cowork-admin-governance">Microsoft Learn: Cowork governance</a> — administrator controls and usage governance.</li>
+          <li><a href="https://www.ccl.org/articles/leading-effectively-articles/closing-the-gap-between-intent-vs-impact-sbii/">Center for Creative Leadership: Situation-Behavior-Impact</a> — external background for the feedback structure, not a fictional internal policy or reproduced assessment.</li>
+        </ul>
+        <p class="small">Product documentation reviewed October 15, 2026. Availability can change; this guide does not certify tenant enablement. The site stores only completion flags on this browser when storage is available. It has no analytics, sign-in, uploads or AI connection. Copy buttons place text on your clipboard; you choose what to paste into your approved Copilot.</p>
+        <button class="button secondary" type="button" id="print">Print this field guide</button>
+        <a class="button primary" href="#welcome">Return to the start ↑</a>
+      </section>
+      <footer class="site-footer">THE PRACTICE LAB <span>Synthetic scenarios. Real human judgment.</span></footer>
+    </main>
+    <aside class="resources" aria-label="Quick resources">
+      <div class="resource-card"><p class="eyebrow">The practice loop</p><h2>Make it<br>your own.</h2><ol><li>Download the brief</li><li>Attach or paste it</li><li>Run the prompt</li><li>Challenge the draft</li><li>Verify before use</li></ol></div>
+      <div class="resource-card"><p class="eyebrow">Grab your inputs</p><a href="assets/self-review-evidence.txt" download>01 · Self-review evidence ↓</a><a href="assets/leadership-session-brief.txt" download>02 · Leadership session ↓</a><a href="assets/conversation-brief.txt" download>03 · Conversation brief ↓</a><p class="small">Plain text. Small files. No macros, accounts or real personnel data.</p></div>
+      <div class="resource-card accent"><strong>You are the reviewer.</strong><p>Prepare and practice here. Do not submit, send or make personnel decisions from an unchecked AI draft.</p></div>
+    </aside>
+  </div>
+  <div id="status" role="status" aria-live="polite"></div>
+  <noscript><p class="noscript">JavaScript is off. All activities and downloads remain available; select and copy prompt text manually. Progress tracking is unavailable.</p></noscript>
+</body>
+</html>

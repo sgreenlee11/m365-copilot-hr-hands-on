@@ -1,0 +1,50 @@
+NORTHSTAR RETAIL / SYNTHETIC SELF-REVIEW EVIDENCE
+All people, events and figures below are invented for training.
+Persona: Avery, learning program lead. "I" in the draft means Avery.
+Review period: July 1-September 30, 2026 (Q3).
+Context window: April 1-September 30, 2026.
+These are practice records, not official personnel records.
+
+R01 | April 22, 2026 | PRIOR-QUARTER CONTEXT
+Avery and two store leads designed an onboarding checklist. A 12-person
+pilot ended June 18. The pilot is not a Q3 accomplishment.
+
+R02 | July 10, 2026 | CONTRIBUTION LOG
+Avery adapted the existing checklist into a facilitator guide, incorporated
+comments from four store leads, and coordinated three July learning sessions.
+Store leads delivered the sessions; Avery did not deliver all sessions.
+
+R03 | August 28, 2026 | DRAFT STATUS NOTE
+A draft slide says "120 colleagues completed onboarding." Its author counted
+registration rows, including duplicate bookings. It has not been corrected.
+
+R04 | September 3, 2026 | VERIFIED COMPLETION EXPORT SUMMARY
+120 registration rows; 8 duplicate registrations; 112 unique participants.
+All 112 unique participants completed the required checklist by August 31.
+This replaces the draft completion count in R03. No satisfaction results
+were collected. Avery reconciled the duplicates with the coordinator.
+
+R05 | September 15, 2026 | TEAM OPERATIONS SNAPSHOT
+The team's average checklist processing time was 5.0 days in July and 4.2
+days in August, a 0.8-day reduction. Cohort sizes and staffing differed.
+No controlled comparison or financial benefit calculation exists.
+Avery's guide may have contributed, but causation is not established.
+
+R06 | September 18, 2026 | COLLABORATION AND LEARNING NOTE
+A store lead's synthetic feedback: the guide made responsibilities clearer.
+One session invitation was sent two days later than planned after Avery
+missed a scheduling dependency. Avery added a pre-session dependency check.
+There is no measured evidence yet that the new check improved delivery.
+
+R07 | September 25, 2026 | PILOT PROPOSAL
+Avery proposed a mentoring pilot for October. Planning started in September.
+The pilot has not launched; participation and outcomes are unknown.
+
+R08 | September 30, 2026 | NEXT-QUARTER DRAFT GOALS
+Proposals for discussion, not approved commitments:
+1. Agree a mentoring pilot scope and success measure with store leads.
+2. Establish a consistent completion-data reconciliation step.
+Owners beyond Avery, dates and targets require agreement.
+
+Known gaps: no approved savings figure, no satisfaction survey, no
+causal evaluation, no measured mentoring outcome. Do not fill these in.
