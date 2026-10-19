@@ -55,6 +55,23 @@ test("shared resource cards are removed while in-exercise downloads remain", () 
   }
 });
 
+test("screen typography stays readable without shrinking prompts on small screens", () => {
+  const css = fs.readFileSync(path.join(root, "styles.css"), "utf8").split("@media print")[0];
+  const workshop = fs.readFileSync(path.join(root, "workshop.css"), "utf8");
+  assert.match(css, /body\s*\{[^}]*font-size: 1\.125rem;/);
+  assert.match(css, /pre\s*\{[^}]*font: 1\.0625rem\/1\.75/);
+  assert.doesNotMatch(css, /(?:font-size|font):\s*(?:[0-9]|1[0-2])px\b/);
+  assert.match(css, /max-width: 1440px/);
+  assert.match(css, /@media \(max-width: 960px\)/);
+  assert.match(workshop, /@media \(max-width: 960px\)/);
+  const narrow = css.slice(css.indexOf("@media (max-width: 960px)"));
+  assert.doesNotMatch(narrow, /pre\s*\{[^}]*font(?:-size)?:/);
+  for (const selector of ["nav a", ".prompt-card button", ".download a, .download button"]) {
+    const rule = css.slice(css.indexOf(`${selector} {`)).split("}")[0];
+    assert.match(rule, /min-height: 44px/);
+  }
+});
+
 test("live follow-up uses thread context and facilitator material stays inert", () => {
   const reply = html.match(/<pre id="week-reply">([\s\S]*?)<\/pre>/)[1];
   assert.match(reply, /using only the thread's context/);

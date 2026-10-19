@@ -117,6 +117,8 @@ For live delivery, Survey insights' facilitator checks and Session close's facil
 
 Responsive layout with navigation and exercise content only; there is no shared resource-card sidebar or bottom block. Dataset downloads and optional synthetic fallbacks remain within the relevant exercises. Grouped navigation, semantic headings, skip link, visible focus, keyboard-operable native controls, live copy/error messages and reduced-motion support. Without JavaScript all activities and downloads remain readable. Print expands disclosures and includes live and after-session material. Back/Forward restores navigation.
 
+Reading text and secondary labels use relative units: at the default browser font setting, body text is 18px, prompts and exercise instructions are 17px, and secondary labels are 13-16px. Prompt text is not reduced on mobile. The reading layout is capped at 1440px, and navigation moves above the content at 960px to avoid cramped tablet columns. Copy/download controls have a 44px minimum height, and prompt headers wrap rather than squeezing their titles. Browser text-size preferences remain effective; print retains its compact prompt styling.
+
 Seven completion flags are stored under `people-practice-lab-progress-v1`. The header distinguishes two live labs from five later sections. Saved weekly/survey progress remains valid. Retired self-review/session/rehearsal flags do not mark the new sections complete; obsolete section hashes fall back to Start here. Reset asks for confirmation and clears all seven. Storage errors are surfaced explicitly. The site has no analytics, external scripts/fonts, sign-in, upload mechanism or AI connection. Copying uses the device clipboard only.
 
 Run:
