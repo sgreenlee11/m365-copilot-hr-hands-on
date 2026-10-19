@@ -31,8 +31,11 @@ function showActivity(focus = false) {
 
 function updateProgress() {
   const count = checks.filter((check) => check.checked).length;
+  const live = checks.filter((check) => check.dataset.phase === "live");
+  const later = checks.filter((check) => check.dataset.phase !== "live");
+  document.getElementById("progress").max = checks.length;
   document.getElementById("progress").value = count;
-  document.getElementById("progress-label").textContent = `${count} of 3 labs complete`;
+  document.getElementById("progress-label").textContent = `${live.filter((check) => check.checked).length} of ${live.length} live · ${later.filter((check) => check.checked).length} of ${later.length} later`;
 }
 
 try {
@@ -55,7 +58,7 @@ checks.forEach((check) => check.addEventListener("change", () => {
 }));
 
 document.getElementById("reset").addEventListener("click", () => {
-  if (!window.confirm("Reset the three completion checkboxes on this browser?")) return;
+  if (!window.confirm(`Reset all ${checks.length} lab completion checkboxes on this browser?`)) return;
   checks.forEach((check) => { check.checked = false; });
   updateProgress();
   try {

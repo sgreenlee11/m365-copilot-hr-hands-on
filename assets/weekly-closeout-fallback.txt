@@ -1,0 +1,55 @@
+WEEKLY HR CLOSEOUT | SYNTHETIC FALLBACK
+All people, messages, commitments and events below are invented for training.
+Fictional organization: Northstar Retail. Not real personnel or work evidence.
+Practice period: October 12-16, 2026. Time zone: America/Chicago.
+You play the senior HR leader sponsoring leadership-development programs.
+Use only these excerpts; they do not establish actual unread status or full inbox coverage.
+
+W01 | Email | October 12, 2026, 09:00
+From: Program Lead | To: HR Sponsor
+Subject: Manager essentials launch decision
+Please approve the pilot launch by Thursday, October 15. The current estimate
+is 80 available places. We still need final confirmation of facilitator capacity.
+
+W02 | Same email thread | October 16, 2026, 10:00
+From: Program Lead | To: HR Sponsor
+Update: facilitator capacity is confirmed for 72 places, not 80. The approval
+deadline has moved to Monday, October 19. Please confirm whether to launch
+with 72 places or postpone. This replaces the Thursday deadline in W01.
+No later reply is included in this training pack.
+
+W03 | Teams discussion | October 15, 2026, 14:00
+From: Workforce Planning Partner | To: HR Sponsor
+For next week's aggregate planning discussion, can you clarify which two
+leadership-development priorities should inform the resource assumptions?
+We are not requesting individual employee or succession records. I need
+your direction before I can finish the planning note. No due time was stated.
+
+W04 | Referenced meeting notes | October 14, 2026, 11:00
+Meeting: Learning program portfolio checkpoint
+The group proposed combining two facilitator guides. This was a proposal,
+not an approved decision. The HR Sponsor was asked to review the tradeoff.
+The team has not agreed an owner for the combined guide or a delivery date.
+The notes do not establish who attended or what anyone read.
+
+W05 | Email thread | October 13, 2026, 09:00; latest reply October 16, 12:00
+Initial request from Reporting Partner:
+Could someone confirm whether the aggregate learning dashboard is ready?
+Latest reply from Reporting Partner:
+Confirmed: the dashboard passed the agreed checks and is ready for Monday.
+No further action is requested from the HR Sponsor on this item.
+
+W06 | Teams discussion | October 16, 2026, 15:00
+From: Learning Operations Partner | To: Program group
+The pilot materials still need an accessibility check before release.
+Who can coordinate it? We have not agreed an owner or date.
+This is a dependency to clarify, not an assigned task for the HR Sponsor.
+
+EVIDENCE BOUNDARIES
+- W02 supersedes the old date and capacity estimate in W01.
+- W03 contains an explicit request to the HR Sponsor, but no stated due time.
+- W04 is a proposed decision, not an approved plan.
+- W05 is resolved in its latest included reply.
+- W06 has no agreed owner or deadline. Suggested assignments need agreement.
+- Absence of a reply in this pack is not proof a request was ignored.
+- Draft only. Do not send, schedule, create tasks or infer employment decisions.

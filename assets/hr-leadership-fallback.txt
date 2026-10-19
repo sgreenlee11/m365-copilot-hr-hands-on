@@ -1,0 +1,82 @@
+SYNTHETIC HR LEADERSHIP PRACTICE PACK
+All organizations, roles, records, dates and figures below are fictional.
+Northstar Retail is an invented training organization. No real people,
+employee records, private correspondence or internal policies are represented.
+This is a source-only fallback, not material to mix into real work.
+
+Practice period: October 12-26, 2026.
+Topic: leadership-readiness learning pilot. This is program governance,
+not a talent assessment or an individual promotion/employment decision.
+Evidence IDs and source types are explicit. Notes are not transcripts.
+
+H01 | Portfolio brief | October 12, 2026
+The pilot runs at four fictional sites. The proposed decision for a later
+steering meeting is whether to expand to six sites next quarter, keep four
+sites while resolving capacity, or defer the expansion decision.
+The intended audience is the HR sponsor, Learning & Development Director,
+HR Operations Lead, Finance Partner and Operations Partner.
+The HR sponsor wants a decision-ready comparison of delivery capacity,
+cost and participant access. No expansion has been approved.
+
+H02 | Final program participation update | October 16, 2026
+There were 80 unique registered participants across the four sites.
+64 completed the learning activities by the October 16 cutoff.
+This supersedes the preliminary completion count in H03.
+There is no site-level breakdown or evaluation of business outcomes.
+Completion is not evidence of improved leadership performance, retention,
+promotion readiness or financial return. No individual ratings are included.
+
+H03 | Preliminary program email excerpt | October 14, 2026
+The preliminary report listed 60 completions, with reconciliation pending.
+Use H02's later final count when discussing participation at the cutoff.
+The Finance Partner asked for a full delivery-cost estimate before any
+expansion decision. This question does not establish opposition.
+The Operations Partner asked whether facilitator time and backfill would
+be available. There is no recorded commitment of capacity.
+
+H04 | Upcoming steering agenda | October 26, 2026
+The leadership-readiness item has 15 minutes.
+Compare staying at four sites with conditional expansion to six.
+A preliminary incremental estimate is $12,000 for facilitation and materials.
+It is not an approved budget and excludes backfill; total cost is unknown.
+Questions: what capacity is available, how to enable participant access
+across shifts, and what evidence is needed before expansion?
+Attendance does not establish anyone's position or approval authority.
+
+H05 | Reviewed fictional meeting notes | October 15, 2026
+Source type: notes, not a transcript or recording.
+Decision: keep the pilot at four sites pending capacity and cost checks.
+Action: the Learning & Development Director will draft a facilitator-capacity
+assessment by October 23, 2026.
+Action: the HR Operations Lead will coordinate a full cost check with Finance.
+No due date for the cost check is stated.
+Discussion only: mentoring could be added to a future design; not approved.
+Unresolved: who would own shift-access planning if expansion is approved?
+The notes contain no approval to expand, spend $12,000, add mentoring,
+send communications or assign an owner to the shift-access question.
+
+H06 | Draft Decision Brief Handoff | October 16, 2026
+Decision question: should the next steering group authorize an expansion,
+retain four sites, or wait for more evidence?
+Evidence: 64 of 80 participants completed at the cutoff (H02); delivery
+capacity is uncommitted (H03); the incremental $12,000 estimate is partial
+and unapproved (H04). H05 retains four sites pending the checks.
+Options: retain four sites; consider six only after checks; defer a decision.
+Draft recommendation: keep four sites until full cost and capacity are
+reviewed. This is a proposed recommendation for the later meeting,
+not an additional decision or an agreed commitment.
+Risks: constrained facilitator/backfill capacity; uneven access across shifts.
+The second risk is a possibility to investigate, not a measured disparity.
+Needs validation: full cost, available capacity, shift-access arrangements
+and what decision authority/approvals are required.
+There is no evidence here of improved performance, causal impact or ROI.
+
+FACILITATOR CHECKS
+- 64/80 completions = 80%, with cutoff and denominator retained.
+- The older count of 60 is preliminary, not a second cohort to add.
+- $12,000 excludes backfill and is not an approved or complete cost.
+- H05 is the past-meeting record. H04 is an upcoming agenda.
+- L&D Director: October 23 due date. HR Operations Lead: no stated due date.
+- Shift-access owner remains unassigned; mentoring and expansion unapproved.
+- No participant position should be inferred from a title or missing reply.
+- Do not send, schedule, publish or create tasks during practice.

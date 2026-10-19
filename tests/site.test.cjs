@@ -5,36 +5,176 @@ const path = require("node:path");
 const vm = require("node:vm");
 const root = path.resolve(__dirname, "..");
 const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
+const participantHtml = html.replace(/<template\b[\s\S]*?<\/template>/g, "");
 const script = fs.readFileSync(path.join(root, "script.js"), "utf8");
+const afterIds = ["pattern", "prepare", "create", "follow-through", "responsible"];
 
 test("all local links, anchors and copy targets resolve", () => {
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
   assert.equal(new Set(ids).size, ids.length, "IDs must be unique");
   for (const [, href] of html.matchAll(/\b(?:href|src|data-source)="([^"]+)"/g)) {
-    if (/^https?:/.test(href)) continue;
+    if (/^(?:https?:|data:)/.test(href)) continue;
     if (href.startsWith("#")) assert.ok(ids.includes(href.slice(1)), href);
     else assert.ok(fs.existsSync(path.join(root, href)), href);
   }
   const targets = [...html.matchAll(/\bdata-copy="([^"]+)"/g)].map((match) => match[1]);
-  assert.equal(targets.length, 9);
+  assert.equal(targets.length, 41);
   targets.forEach((id) => assert.ok(ids.includes(id), id));
-  assert.equal([...html.matchAll(/data-complete="/g)].length, 3);
+  assert.equal([...html.matchAll(/data-complete="/g)].length, 7);
+});
+
+test("two live labs lead the path; five generic HR sections follow the session", () => {
+  const sections = [...html.matchAll(/<section id="([^"]+)"/g)].map(([, id]) => id);
+  assert.deepEqual(sections, ["welcome", "week", "survey", "wrap", ...afterIds]);
+  const nav = html.match(/<nav[\s\S]*?<\/nav>/)[0];
+  assert.deepEqual([...nav.matchAll(/href="#([^"]+)"/g)].map(([, id]) => id), sections);
+  assert.match(nav, /In person/);
+  assert.match(nav, /After the session/);
+  for (const id of afterIds) {
+    const section = html.match(new RegExp(`<section id="${id}"[\\s\\S]*?</section>`))[0];
+    assert.match(section, /AFTER THE SESSION/);
+    assert.match(section, /Self-paced practice/);
+  }
+  const welcome = html.match(/<section id="welcome"[\s\S]*?<\/section>/)[0];
+  assert.match(welcome, /href="#week"/);
+  assert.doesNotMatch(welcome, /60-MINUTE|three labs/i);
+  assert.match(html, /data-complete="week" data-phase="live"/);
+  assert.match(html, /data-complete="survey" data-phase="live"/);
+});
+
+test("shared resource cards are removed while in-exercise downloads remain", () => {
+  assert.doesNotMatch(html, /class="resources"|class="resource-card|aria-label="Quick resources"/);
+  assert.doesNotMatch(fs.readFileSync(path.join(root, "styles.css"), "utf8"), /\.resources\b|\.resource-card\b/);
+  for (const [id, file] of [
+    ["week", "weekly-closeout-fallback.txt"],
+    ["survey", "FY27-Q2-QC-Details-Fictitious.xlsx"],
+    ...afterIds.map((id) => [id, "hr-leadership-fallback.txt"])
+  ]) {
+    const section = html.match(new RegExp(`<section id="${id}"[\\s\\S]*?</section>`))[0];
+    assert.ok(section.includes(`href="assets/${file}" download`), `${id}: keep its own download`);
+  }
+});
+
+test("live follow-up uses thread context and facilitator material stays inert", () => {
+  const reply = html.match(/<pre id="week-reply">([\s\S]*?)<\/pre>/)[1];
+  assert.match(reply, /using only the thread's context/);
+  assert.match(reply, /ask me one question before drafting/);
+  assert.doesNotMatch(reply, /\[|\]|reviewed facts below|Do not send|add recipients/i);
+  const saved = html.match(/<template id="facilitator-content">([\s\S]*?)<\/template>/)[1];
+  assert.match(saved, /data-facilitator="survey"[\s\S]*Facilitator checks/);
+  assert.match(saved, /data-facilitator="session-close"[\s\S]*Facilitator notes &amp; product sources/);
+  assert.match(saved, /Preflight before every delivery/);
+  assert.match(saved, /class="sources"/);
+  assert.doesNotMatch(participantHtml, /Facilitator checks|Facilitator notes|Preflight before every delivery|class="sources"/);
+  assert.match(participantHtml, /id="print"/);
 });
 
 test("practice inputs and evidence checkpoints stay aligned", () => {
   for (const [name, prefix, count] of [
-    ["self-review-evidence.txt", "R", 8],
-    ["leadership-session-brief.txt", "L", 5],
-    ["conversation-brief.txt", "C", 5]
+    ["weekly-closeout-fallback.txt", "W", 6],
+    ["hr-leadership-fallback.txt", "H", 6]
   ]) {
     const content = fs.readFileSync(path.join(root, "assets", name), "utf8");
     assert.match(content, /fictional|invented/i);
     for (let n = 1; n <= count; n++) assert.ok(content.includes(`${prefix}0${n} |`));
   }
-  assert.match(html, /112 verified completions/);
-  assert.match(html, /exactly 90 minutes/);
-  assert.match(html, /then STOP and wait/);
-  assert.match(html, /not an automated employment decision/);
+  assert.match(html, /H02 supersedes H03/);
+  assert.match(html, /64 of 80 participants completed/);
+  assert.match(html, /H05 as the meeting record/);
+  assert.match(html, /not a transcript/);
+  assert.match(html, /not part of the two live exercises/);
+});
+
+test("short interactive sequences precede optional longer finishers", () => {
+  for (const lab of ["week", "survey", ...afterIds]) {
+    const section = html.match(new RegExp(`<section id="${lab}"[\\s\\S]*?</section>`))[0];
+    assert.equal([...section.matchAll(/<h3 class="section-title">/g)].length, 4, `${lab}: four core steps`);
+    assert.ok([...section.matchAll(/class="checkpoint"/g)].length >= 4, `${lab}: participant checkpoints`);
+    assert.match(section, /Start (?:a new|a fresh)|start a separate|start fresh/i);
+  }
+  for (const [, id, text] of html.matchAll(/<pre id="([^"]+)">([\s\S]*?)<\/pre>/g)) {
+    const words = text.trim().split(/\s+/).length;
+    if (id.endsWith("-finish")) {
+      assert.ok(words > 100 && words <= 160, `${id}: meaningful but bounded synthesis (${words} words)`);
+    } else {
+      assert.ok(words <= 90, `${id}: keep the individual ask short (${words} words)`);
+    }
+  }
+  for (const lab of ["pattern", "create"]) {
+    const section = html.match(new RegExp(`<section id="${lab}"[\\s\\S]*?</section>`))[0];
+    const core = lab === "pattern" ? "pattern-expectations" : "create-refine";
+    assert.ok(section.indexOf(`id="${core}"`) < section.indexOf(`id="${lab}-finish"`));
+    assert.match(section, /Optional finisher/);
+  }
+});
+
+test("attendee work is preferred, fallbacks are separate, and retired branding is removed", () => {
+  for (const lab of afterIds) {
+    const section = html.match(new RegExp(`<section id="${lab}"[\\s\\S]*?</section>`))[0];
+    assert.ok(section.indexOf("Start with") < section.indexOf('class="fallback"'));
+    assert.match(section, /Use the synthetic fallback/);
+    assert.match(section, /Work IQ off/);
+    assert.match(section, /not my work data|not my work|work references/i);
+    assert.match(section, /class="fallback">/);
+    for (const [, text] of section.matchAll(/<pre id="[^"]+">([\s\S]*?)<\/pre>/g)) {
+      assert.doesNotMatch(text, /Northstar|H01|H05|October 26, 2026/);
+    }
+  }
+  assert.match(html, /Work IQ on/);
+  assert.match(html, /chat history and access to original sources do not transfer automatically/i);
+  assert.match(html, /Copilot in Word/);
+  assert.match(html, /Leave recipients blank/);
+  assert.match(html, /Respect restrictions on copying\/export/);
+  assert.match(html, /not a legal, privacy or compliance certification/);
+  assert.doesNotMatch(html, /cowork|brand-mark|favicon\.svg|>n\.</i);
+  assert.doesNotMatch(fs.readFileSync(path.join(root, "README.md"), "utf8"), /cowork/i);
+  assert.doesNotMatch(fs.readFileSync(path.join(root, "styles.css"), "utf8"), /brand-mark/);
+  assert.equal(fs.existsSync(path.join(root, "assets", "favicon.svg")), false);
+});
+
+test("generic sections are adapted to senior HR decisions and preserve human action gates", () => {
+  const section = (id) => html.match(new RegExp(`<section id="${id}"[\\s\\S]*?</section>`))[0];
+  assert.match(section("pattern"), /goal, context, source and expectations/i);
+  assert.match(section("pattern"), /pattern-goal[\s\S]*pattern-context[\s\S]*pattern-source[\s\S]*pattern-expectations/);
+  assert.match(section("prepare"), /Do not infer agreement, opposition, motives or decision authority/);
+  assert.match(section("prepare"), /business value[\s\S]*delivery capacity[\s\S]*equitable access/);
+  assert.match(section("create"), /Decision Brief Handoff/);
+  assert.match(section("create"), /Decision Needed[\s\S]*Situation, Evidence, Options, Recommendation and Risks/);
+  assert.match(section("create"), /No cross-app memory or original-source access is assumed/);
+  assert.match(section("follow-through"), /an accessible transcript is required/);
+  assert.match(section("follow-through"), /label the result notes-based/);
+  assert.match(section("follow-through"), /Manually open an unsent message/);
+  assert.match(section("follow-through"), /Do not send, create tasks, schedule or add recipients/);
+  assert.match(section("responsible"), /Revise, Hold or Ready for human approval/);
+  for (const habit of ["Verify", "Separate", "Protect", "Challenge", "Edit", "Own"]) {
+    assert.ok(section("responsible").includes(`<strong>${habit}:`), habit);
+  }
+  for (const retired of ["review-find", "session-plan", "conversation-rehearse"]) {
+    assert.ok(!html.includes(`id="${retired}"`), retired);
+  }
+});
+
+test("live prompts cover HR closeout and workbook questions on the correct surfaces", () => {
+  const week = html.match(/<section id="week"[\s\S]*?<\/section>/)[0];
+  const survey = html.match(/<section id="survey"[\s\S]*?<\/section>/)[0];
+  assert.match(week, /complete inbox audit/);
+  assert.match(week, /Do not infer someone ignored a message/);
+  assert.match(week, /Leave it unsent/);
+  assert.match(week, /W02 supersedes W01/);
+  assert.match(survey, /shared demo is the lead/i);
+  assert.match(survey, /Sheet1.*QC_Details/);
+  assert.match(survey, /Copilot in Excel/);
+  assert.match(survey, /Agents → Analyst/);
+  assert.match(survey, /same unedited demo workbook/);
+  assert.match(survey, /not an anonymous engagement survey/);
+  assert.match(survey, /Do not infer causation/);
+  assert.match(survey, /Count blank replies separately/);
+  assert.match(survey, /Leadership L\/M and Performance P\/Q/);
+  assert.match(survey, /Q by Manager/);
+  assert.match(survey, /1 of 30 \(3\.3%\).*11 of 20 \(55%\)/);
+  for (const id of ["survey-scope", "survey-leader", "survey-counts", "survey-support-themes", "survey-goals", "survey-support-replies", "survey-accomplishments", "survey-tenure", "survey-new-role", "survey-incomplete", "survey-ratings", "survey-rating-comments", "survey-coaching", "survey-finish"]) {
+    assert.ok(survey.includes(`id="${id}"`), id);
+  }
 });
 
 function environment({ saved = "{}", storageFails = false, copyFails = false } = {}) {
@@ -50,9 +190,11 @@ function environment({ saved = "{}", storageFails = false, copyFails = false } =
     };
   }
   for (const id of ["status", "main", "progress", "progress-label", "reset", "print"]) elements.set(id, element(id));
-  const activities = ["welcome", "review", "session", "conversation", "wrap"].map(element);
+  const activities = [...html.matchAll(/<section id="([^"]+)"/g)].map(([, id]) => element(id));
   const links = activities.map((activity) => Object.assign(element(), { hash: `#${activity.id}` }));
-  const checks = ["review", "session", "conversation"].map((id) => Object.assign(element(), { dataset: { complete: id } }));
+  const checks = [...html.matchAll(/<input[^>]+data-complete="([^"]+)"([^>]*)>/g)].map(([, id, attrs]) =>
+    Object.assign(element(), { dataset: { complete: id, phase: attrs.match(/data-phase="([^"]+)"/)?.[1] } }));
+  const details = [...participantHtml.matchAll(/<details\b/g)].map(() => element());
   const copyButtons = [...html.matchAll(/data-copy="([^"]+)"/g)].map(([, id]) => {
     const text = html.match(new RegExp(`<pre id="${id}">([\\s\\S]*?)</pre>`))[1];
     elements.set(id, Object.assign(element(id), { textContent: text }));
@@ -63,7 +205,7 @@ function environment({ saved = "{}", storageFails = false, copyFails = false } =
   let selected = false;
   const context = {
     document: {
-      querySelectorAll(selector) { return ({ ".activity": activities, "nav a": links, "[data-complete]": checks, "[data-copy]": copyButtons, "[data-source]": sourceButtons, "details": [] })[selector]; },
+      querySelectorAll(selector) { return ({ ".activity": activities, "nav a": links, "[data-complete]": checks, "[data-copy]": copyButtons, "[data-source]": sourceButtons, "details": details })[selector]; },
       getElementById(id) { return elements.get(id); },
       createRange() { return { selectNodeContents() { selected = true; } }; }
     },
@@ -79,27 +221,61 @@ function environment({ saved = "{}", storageFails = false, copyFails = false } =
     setTimeout() { return 1; }, clearTimeout() {}
   };
   vm.runInNewContext(script, context);
-  return { elements, activities, links, checks, copyButtons, sourceButtons, context, listeners, copied: () => copied, selected: () => selected, saved: () => saved };
+  return { elements, activities, links, checks, details, copyButtons, sourceButtons, context, listeners, copied: () => copied, selected: () => selected, saved: () => saved };
 }
 
+test("printing expands fallbacks and finishers, then restores their state", () => {
+  const env = environment();
+  env.details[1].open = true;
+  const original = env.details.map((detail) => detail.open);
+  env.listeners.beforeprint();
+  assert.ok(env.details.every((detail) => detail.open));
+  env.listeners.afterprint();
+  assert.deepEqual(env.details.map((detail) => detail.open), original);
+});
+
 test("navigation, completion, restoration and reset work", () => {
-  const env = environment({ saved: '{"review":true}' });
+  const env = environment({ saved: '{"pattern":true,"review":true}' });
   assert.equal(env.elements.get("progress").value, 1);
+  assert.equal(env.elements.get("progress").max, 7);
+  assert.equal(env.elements.get("progress-label").textContent, "0 of 2 live · 1 of 5 later");
   assert.equal(env.activities.filter((item) => !item.hidden).length, 1);
-  env.context.location.hash = "#conversation";
+  env.context.location.hash = "#responsible";
   env.listeners.hashchange();
-  assert.equal(env.activities.find((item) => !item.hidden).id, "conversation");
-  assert.equal(env.links[3].attrs["aria-current"], "step");
-  env.checks[1].checked = true;
-  env.checks[1].change();
-  assert.equal(JSON.parse(env.saved()).session, true);
+  assert.equal(env.activities.find((item) => !item.hidden).id, "responsible");
+  assert.equal(env.links.find((link) => link.hash === "#responsible").attrs["aria-current"], "step");
+  const prepare = env.checks.find((check) => check.dataset.complete === "prepare");
+  prepare.checked = true;
+  prepare.change();
+  assert.equal(JSON.parse(env.saved()).prepare, true);
+  assert.equal(JSON.parse(env.saved()).review, undefined);
   assert.equal(env.elements.get("progress").value, 2);
+  const week = env.checks.find((check) => check.dataset.complete === "week");
+  week.checked = true;
+  week.change();
+  assert.equal(JSON.parse(env.saved()).week, true);
+  assert.equal(env.elements.get("progress-label").textContent, "1 of 2 live · 2 of 5 later");
+  env.context.window.confirm = () => false;
+  env.elements.get("reset").click();
+  assert.equal(env.elements.get("progress").value, 3);
+  env.context.window.confirm = () => true;
   env.elements.get("reset").click();
   assert.equal(env.elements.get("progress").value, 0);
   assert.equal(env.saved(), null);
+  assert.equal(env.elements.get("progress-label").textContent, "0 of 2 live · 0 of 5 later");
   env.context.location.hash = "#invalid";
   env.listeners.hashchange();
   assert.equal(env.activities[0].hidden, false);
+});
+
+test("live completion survives while retired lab flags do not complete new sections", () => {
+  const env = environment({ saved: '{"week":true,"survey":true,"review":true,"session":true,"conversation":true}' });
+  assert.equal(env.elements.get("progress").value, 2);
+  assert.equal(env.elements.get("progress-label").textContent, "2 of 2 live · 0 of 5 later");
+  assert.ok(env.checks.filter((check) => check.dataset.phase !== "live").every((check) => !check.checked));
+  env.context.location.hash = "#review";
+  env.listeners.hashchange();
+  assert.equal(env.activities.find((item) => !item.hidden).id, "welcome");
 });
 
 test("every prompt and source copies its exact text", async () => {
