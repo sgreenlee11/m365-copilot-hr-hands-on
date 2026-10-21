@@ -18,7 +18,7 @@ test("all local links, anchors and copy targets resolve", () => {
     else assert.ok(fs.existsSync(path.join(root, href)), href);
   }
   const targets = [...html.matchAll(/\bdata-copy="([^"]+)"/g)].map((match) => match[1]);
-  assert.equal(targets.length, 41);
+  assert.equal(targets.length, 42);
   targets.forEach((id) => assert.ok(ids.includes(id), id));
   assert.equal([...html.matchAll(/data-complete="/g)].length, 7);
 });
@@ -42,11 +42,24 @@ test("two live labs lead the path; five generic HR sections follow the session",
   assert.match(html, /data-complete="survey" data-phase="live"/);
 });
 
+test("start here keeps essential setup and introduces practical prompting tips", () => {
+  const welcome = html.match(/<section id="welcome"[\s\S]*?<\/section>/)[0];
+  const setup = welcome.match(/<ol class="steps">([\s\S]*?)<\/ol>/)[1];
+  assert.equal([...setup.matchAll(/<li>/g)].length, 2);
+  assert.match(setup, /Open your work Copilot/);
+  assert.match(setup, /Download the shared survey workbook/);
+  assert.doesNotMatch(welcome, /hero-strip|Choose safe work|Point to sources|Run one prompt|Private work, public guide|Choose the right surface|Availability gate|What should change/);
+  assert.match(welcome, /Small tips\. Better responses\./);
+  assert.match(welcome, /What outcome are you looking for\?/);
+  for (const ingredient of ["Goal", "Context", "Source", "Expectations"]) {
+    assert.ok(welcome.includes(`<b>${ingredient}</b>`), ingredient);
+  }
+});
+
 test("shared resource cards are removed while in-exercise downloads remain", () => {
   assert.doesNotMatch(html, /class="resources"|class="resource-card|aria-label="Quick resources"/);
   assert.doesNotMatch(fs.readFileSync(path.join(root, "styles.css"), "utf8"), /\.resources\b|\.resource-card\b/);
   for (const [id, file] of [
-    ["week", "weekly-closeout-fallback.txt"],
     ["survey", "FY27-Q2-QC-Details-Fictitious.xlsx"],
     ...afterIds.map((id) => [id, "hr-leadership-fallback.txt"])
   ]) {
@@ -72,11 +85,36 @@ test("screen typography stays readable without shrinking prompts on small screen
   }
 });
 
-test("live follow-up uses thread context and facilitator material stays inert", () => {
+test("weekly closeout uses five steps with distinct Chat and Outlook context", () => {
+  const week = html.match(/<section id="week"[\s\S]*?<\/section>/)[0];
+  const catchup = week.match(/<pre id="week-catchup">([\s\S]*?)<\/pre>/)[1];
+  assert.match(catchup, /^Help me close out the week\./);
+  assert.doesNotMatch(catchup, /\[|\]/);
+  assert.match(catchup, /date range and time zone/);
   const reply = html.match(/<pre id="week-reply">([\s\S]*?)<\/pre>/)[1];
-  assert.match(reply, /using only the thread's context/);
-  assert.match(reply, /ask me one question before drafting/);
-  assert.doesNotMatch(reply, /\[|\]|reviewed facts below|Do not send|add recipients/i);
+  assert.match(reply, /^Send a concise follow-up email in Outlook about \[decision to follow up on\]/);
+  assert.match(reply, /our verified findings and its source context/);
+  assert.match(week, /4\. Prepare one follow-up <span class="surface">Same chat/);
+  assert.match(week, /5\. Create your weekly closeout brief <span class="surface">Same chat/);
+  const optional = week.match(/<details><summary>Optional \/ try a thread in Outlook<\/summary>([\s\S]*?)<\/details>/)[1];
+  assert.match(optional, /id="week-outlook-reply"/);
+  assert.doesNotMatch(optional, /id="week-finish"/);
+  assert.ok(week.indexOf('id="week-finish"') < week.indexOf("<details>"));
+  const outlook = week.match(/<pre id="week-outlook-reply">([\s\S]*?)<\/pre>/)[1];
+  assert.match(outlook, /using only the thread's context/);
+  assert.match(outlook, /Infer what needs a response from the messages/);
+  assert.match(outlook, /ask me one question before creating/);
+  assert.doesNotMatch(outlook, /\[|\]/);
+  for (const prompt of [reply, outlook]) {
+    assert.doesNotMatch(prompt, /reviewed facts below|draft|Do not send|add recipients/i);
+  }
+  assert.match(week, /5 interactive steps/);
+  assert.doesNotMatch(week, /What good looks like|class="verify"/);
+  assert.match(week, /Stay in your original Copilot Chat conversation/);
+  assert.doesNotMatch(week, /Start with your content|synthetic|fallback|data-source=/i);
+});
+
+test("facilitator material stays inert", () => {
   const saved = html.match(/<template id="facilitator-content">([\s\S]*?)<\/template>/)[1];
   assert.match(saved, /data-facilitator="survey"[\s\S]*Facilitator checks/);
   assert.match(saved, /data-facilitator="session-close"[\s\S]*Facilitator notes &amp; product sources/);
@@ -105,8 +143,9 @@ test("practice inputs and evidence checkpoints stay aligned", () => {
 test("short interactive sequences precede optional longer finishers", () => {
   for (const lab of ["week", "survey", ...afterIds]) {
     const section = html.match(new RegExp(`<section id="${lab}"[\\s\\S]*?</section>`))[0];
-    assert.equal([...section.matchAll(/<h3 class="section-title">/g)].length, 4, `${lab}: four core steps`);
-    assert.ok([...section.matchAll(/class="checkpoint"/g)].length >= 4, `${lab}: participant checkpoints`);
+    const steps = lab === "week" ? 5 : 4;
+    assert.equal([...section.matchAll(/<h3 class="section-title">/g)].length, steps, `${lab}: core steps`);
+    assert.ok([...section.matchAll(/class="checkpoint"/g)].length >= steps, `${lab}: participant checkpoints`);
     assert.match(section, /Start (?:a new|a fresh)|start a separate|start fresh/i);
   }
   for (const [, id, text] of html.matchAll(/<pre id="([^"]+)">([\s\S]*?)<\/pre>/g)) {
@@ -138,7 +177,8 @@ test("attendee work is preferred, fallbacks are separate, and retired branding i
     }
   }
   assert.match(html, /Work IQ on/);
-  assert.match(html, /chat history and access to original sources do not transfer automatically/i);
+  assert.match(html, /Earlier Chat context does not carry into Outlook/);
+  assert.match(html, /It does not inherit your Chat or Excel conversation/);
   assert.match(html, /Copilot in Word/);
   assert.match(html, /Leave recipients blank/);
   assert.match(html, /Respect restrictions on copying\/export/);
@@ -177,7 +217,6 @@ test("live prompts cover HR closeout and workbook questions on the correct surfa
   assert.match(week, /complete inbox audit/);
   assert.match(week, /Do not infer someone ignored a message/);
   assert.match(week, /Leave it unsent/);
-  assert.match(week, /W02 supersedes W01/);
   assert.match(survey, /shared demo is the lead/i);
   assert.match(survey, /Sheet1.*QC_Details/);
   assert.match(survey, /Copilot in Excel/);
