@@ -18,7 +18,7 @@ test("all local links, anchors and copy targets resolve", () => {
     else assert.ok(fs.existsSync(path.join(root, href)), href);
   }
   const targets = [...html.matchAll(/\bdata-copy="([^"]+)"/g)].map((match) => match[1]);
-  assert.equal(targets.length, 42);
+  assert.equal(targets.length, 34);
   targets.forEach((id) => assert.ok(ids.includes(id), id));
   assert.equal([...html.matchAll(/data-complete="/g)].length, 7);
 });
@@ -146,11 +146,11 @@ test("short interactive sequences precede optional longer finishers", () => {
     const steps = lab === "week" ? 5 : 4;
     assert.equal([...section.matchAll(/<h3 class="section-title">/g)].length, steps, `${lab}: core steps`);
     assert.ok([...section.matchAll(/class="checkpoint"/g)].length >= steps, `${lab}: participant checkpoints`);
-    assert.match(section, /Start (?:a new|a fresh)|start a separate|start fresh/i);
+    assert.match(section, /Start (?:a new|a fresh)|start a separate|start fresh|open Copilot/i);
   }
   for (const [, id, text] of html.matchAll(/<pre id="([^"]+)">([\s\S]*?)<\/pre>/g)) {
     const words = text.trim().split(/\s+/).length;
-    if (id.endsWith("-finish")) {
+    if (id.endsWith("-finish") || id === "survey-dashboard") {
       assert.ok(words > 100 && words <= 160, `${id}: meaningful but bounded synthesis (${words} words)`);
     } else {
       assert.ok(words <= 90, `${id}: keep the individual ask short (${words} words)`);
@@ -178,7 +178,7 @@ test("attendee work is preferred, fallbacks are separate, and retired branding i
   }
   assert.match(html, /Work IQ on/);
   assert.match(html, /Earlier Chat context does not carry into Outlook/);
-  assert.match(html, /It does not inherit your Chat or Excel conversation/);
+  assert.match(html, /It does not inherit your Excel conversation/);
   assert.match(html, /Copilot in Word/);
   assert.match(html, /Leave recipients blank/);
   assert.match(html, /Respect restrictions on copying\/export/);
@@ -211,25 +211,60 @@ test("generic sections are adapted to senior HR decisions and preserve human act
   }
 });
 
+test("survey runs in Excel with an editable dashboard and a separate optional Analyst route", () => {
+  const survey = html.match(/<section id="survey"[\s\S]*?<\/section>/)[0];
+  const optional = survey.match(/<details><summary>Optional \/ explore support themes with Analyst<\/summary>([\s\S]*?)<\/details>/)[1];
+  const powerpoint = survey.match(/<details><summary>Optional \/ create a coaching presentation in PowerPoint<\/summary>([\s\S]*?)<\/details>/)[1];
+  const excel = survey.replace(optional, "").replace(powerpoint, "");
+  assert.equal([...survey.matchAll(/<h3 class="section-title">[^<]+<span class="surface">Copilot in Excel<\/span>/g)].length, 4);
+  assert.doesNotMatch(survey, /Copilot Chat|Same Chat|Chat \/ Excel|>Chat</);
+  assert.doesNotMatch(excel, /attached|reattach|Stay in Analyst/i);
+  assert.match(optional, /attach the same unedited demo workbook/);
+  assert.match(optional, /id="survey-support-themes"/);
+  assert.match(optional, /It does not inherit your Excel conversation/);
+  const dashboard = survey.match(/<pre id="survey-dashboard">([\s\S]*?)<\/pre>/)[1];
+  for (const required of ["new sheet", "supporting PivotTables", "KPI cards", "Worker A", "Manager H", "Status F", "development items S", "Performance Q", "100% stacked", "editable visuals", "denominators", "blanks", "refresh instructions", "50 workers"]) {
+    assert.ok(dashboard.includes(required), required);
+  }
+  assert.match(dashboard, /Preserve Sheet1 and the source table/);
+  assert.match(dashboard, /do not average rating labels or mix Leadership with Performance/);
+  assert.match(excel, /complete them manually/);
+  assert.doesNotMatch(survey, /question-bank|prompt bank|5\. Turn insights/);
+  assert.match(powerpoint, /Open a new presentation in PowerPoint/);
+  assert.match(powerpoint, /file-reference control/);
+  assert.match(powerpoint, /generally available and enabled/);
+  assert.match(powerpoint, /Excel-file references in PowerPoint as preview/);
+  assert.match(powerpoint, /id="survey-finish"/);
+  assert.ok(survey.indexOf('id="survey-dashboard"') < survey.indexOf(powerpoint));
+  assert.doesNotMatch(survey, /Optional finisher|one-page team comparison/);
+  const finish = survey.match(/<pre id="survey-finish">([\s\S]*?)<\/pre>/)[1];
+  assert.match(finish, /Create a five-slide PowerPoint/);
+  assert.match(finish, /QC_Details in the referenced Excel workbook/);
+  assert.match(finish, /three proposed coaching priorities for Manager 1; three for Manager 2/);
+  assert.match(finish, /supporting fields\/rows, a coaching question/);
+  assert.match(survey, /PowerPoint does not inherit your Excel conversation/);
+});
+
 test("live prompts cover HR closeout and workbook questions on the correct surfaces", () => {
   const week = html.match(/<section id="week"[\s\S]*?<\/section>/)[0];
   const survey = html.match(/<section id="survey"[\s\S]*?<\/section>/)[0];
   assert.match(week, /complete inbox audit/);
   assert.match(week, /Do not infer someone ignored a message/);
   assert.match(week, /Leave it unsent/);
-  assert.match(survey, /shared demo is the lead/i);
+  assert.doesNotMatch(survey, /shared demo is the lead/i);
   assert.match(survey, /Sheet1.*QC_Details/);
   assert.match(survey, /Copilot in Excel/);
   assert.match(survey, /Agents → Analyst/);
   assert.match(survey, /same unedited demo workbook/);
-  assert.match(survey, /not an anonymous engagement survey/);
-  assert.match(survey, /Do not infer causation/);
-  assert.match(survey, /Count blank replies separately/);
-  assert.match(survey, /Leadership L\/M and Performance P\/Q/);
+  assert.match(survey, /do not average rating labels or mix Leadership with Performance/);
+  assert.match(survey, /Keep blanks separate from No/);
   assert.match(survey, /Q by Manager/);
   assert.match(survey, /1 of 30 \(3\.3%\).*11 of 20 \(55%\)/);
-  for (const id of ["survey-scope", "survey-leader", "survey-counts", "survey-support-themes", "survey-goals", "survey-support-replies", "survey-accomplishments", "survey-tenure", "survey-new-role", "survey-incomplete", "survey-ratings", "survey-rating-comments", "survey-coaching", "survey-finish"]) {
+  for (const id of ["survey-scope", "survey-leader", "survey-counts", "survey-dashboard", "survey-support-themes", "survey-finish"]) {
     assert.ok(survey.includes(`id="${id}"`), id);
+  }
+  for (const id of ["survey-goals", "survey-support-replies", "survey-accomplishments", "survey-tenure", "survey-new-role", "survey-incomplete", "survey-ratings", "survey-rating-comments", "survey-coaching"]) {
+    assert.ok(!survey.includes(`id="${id}"`), `${id}: prompt bank removed`);
   }
 });
 

@@ -7,8 +7,6 @@ nav { gap: 20px; }
 .after-session h3 { font-size: 25px; }
 .after-session p { font-size: 1.0625rem; }
 .after-links { display: grid; gap: 12px; font-size: 1.0625rem; font-weight: 700; }
-.question-bank { padding: 20px; border: 1px solid var(--cp-border); border-radius: 10px; }
-.question-bank h4 { font-size: 1.125rem; margin: 32px 0 0; }
 @media (min-width: 961px) {
   .nav-group:last-child a { padding-top: 3px; padding-bottom: 3px; }
   .nav-group:last-child a span { top: 4px; }
@@ -18,7 +16,6 @@ nav { gap: 20px; }
   .nav-group { min-width: 0; }
   .nav-links { display: flex; overflow-x: auto; padding-bottom: 8px; }
   .live-outcomes { grid-template-columns: 1fr; }
-  .question-bank { padding: 12px; }
 }
 @media print {
   .live-outcomes { display: block; }

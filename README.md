@@ -8,7 +8,7 @@ A customer-neutral Microsoft 365 Copilot hands-on site for senior HR leaders.
 | --- | --- | --- |
 | In person | Start here | Setup, source boundaries and prompting pattern |
 | In person | Close out the week | Work IQ in Chat with attendees' approved email, Teams and meeting context; one reviewed Outlook reply draft |
-| In person | Survey insights | Shared fictitious FY27 Q2 workbook; Chat for comments, Excel for counts, Analyst for support themes and synthesis |
+| In person | Survey insights | Shared fictitious FY27 Q2 workbook in Excel for comments, counts and an executive dashboard; optional PowerPoint and Analyst extensions |
 | In person | Session close | Reflection and links to optional practice |
 | After the session | Prompting pattern | Goal, context, source and expectations built across a conversation about an HR leadership decision |
 | After the session | Prepare | Work IQ in Chat with a specific upcoming meeting and approved program papers |
@@ -34,7 +34,7 @@ Open `http://127.0.0.1:8765`. Use HTTP rather than opening the HTML file directl
 
 Start here keeps setup to opening work Copilot and downloading the shared workbook, followed by introductory Goal / Context / Source / Expectations tips. Detailed privacy, source-handling and app instructions remain in the relevant exercises; facilitator preflight guidance stays in the preserved template rather than the welcome page.
 
-Run one short prompt at a time, inspect a source, answer a question or make a choice, then continue. Longer final synthesis prompts are optional, after intermediate findings have been reviewed.
+Run one short prompt at a time, inspect a source, answer a question or make a choice, then continue. The weekly brief and Excel dashboard bring reviewed findings together; additional synthesis prompts are optional.
 
 **Weekly closeout:** five prompt-and-review steps in Copilot Chat. Start with “Help me close out the week” without placeholders, then confirm the date range and time zone used. Use program-level communications, not employee cases. Ground Chat in selected work references with Work IQ on where licensed and enabled. Verify the latest reply in Outlook/Teams before treating an ask as pending. Copilot does not establish comprehensive mailbox coverage, actual unread status or that someone ignored a request. Step 4 stays in Chat and requests a follow-up email in Outlook, using a decision placeholder and verified context; review the response and any proposed action before use. Step 5 creates the weekly closeout brief in the same conversation, including a request for a Word document, PowerPoint presentation and rich visual. Review all generated outputs against the verified findings. Opening a thread in Outlook is a separate, collapsed optional activity after step 5: its prompt infers the request or decision from the current thread alone, without pasted Chat findings. Chat history does not transfer into Outlook. Distinguish stated commitments from suggested actions; leave the optional exercise reply unsent. The weekly lab uses attendees' approved work only, with no introductory content box or synthetic fallback. It retains per-step checkpoints but has no separate “What good looks like” block.
 
@@ -42,14 +42,14 @@ Run one short prompt at a time, inspect a source, answer a question or make a ch
 
 The core survey sequence is:
 
-1. Chat: attach the file, check its fields and population.
-2. Chat: examine Manager 2's Leader Insight comments with row-level evidence.
+1. Excel: open the OneDrive working copy, select QC_Details and check its fields and population.
+2. Excel: examine Manager 2's Leader Insight comments with row-level evidence.
 3. Excel: verify completion statuses and development-item gaps.
-4. Analyst: reattach the original demo and inspect support-request themes by manager.
+4. Excel: create an executive dashboard on a new sheet, with supporting PivotTables on another new sheet, KPI cards and editable charts. Preserve Sheet1 and QC_Details. Check team denominators, missing values, refresh behavior and reconciliation to 50 workers.
 
-Select one follow-up from the collapsed question bank if time allows. The remaining prompts are extensions, not an in-person checklist. They cover manager replies to vague goals and support requests, accomplishments, tenure/time in role, new-in-role support, rating differences and explanations, incomplete reviews, and measurable-goal coaching. The optional Analyst finisher asks for a one-page comparison, a Performance-rating chart and three proposed coaching priorities per manager.
+There is no Excel follow-up prompt bank. The main sequence ends with the dashboard. A collapsed optional PowerPoint activity asks attendees to open PowerPoint, explicitly reference the Excel file from work OneDrive, and create a five-slide team comparison with three proposed coaching priorities per manager. Typing the workbook name alone is not a file reference, and PowerPoint does not inherit Excel history. Microsoft currently documents Excel-file references in PowerPoint as preview: do not run that file-reference extension in live delivery until it is GA and enabled in the attendee tenant. If unavailable, skip it or use a reviewed summary and chart data in a supported reference document. Preserve evidence, uncertainty and human review.
 
-Chat, Excel and Analyst do not inherit one another's conversation. Reattach the same unedited demo when switching surfaces and manually carry only reviewed notes. Preserve source aliases, worksheet rows, uncertainty and denominators.
+There is no standalone Copilot Chat route in Survey insights. The Analyst support-theme scenario is a separate, collapsed optional extension. If running it, attach the same unedited demo and manually carry only reviewed notes from Excel; Analyst does not inherit the Excel conversation. Preserve source aliases, worksheet rows, uncertainty and denominators.
 
 ## Self-paced HR leadership practice
 
@@ -85,11 +85,11 @@ Theme/goal-clarity coding is a reviewable interpretation, not a validated assess
 
 ## Product availability and fallback routes
 
-Before delivery, confirm GA status, licenses, tenant policy, Work IQ grounding, Copilot in Excel and Analyst in the exact attendee experience. Basic chat alone does not guarantee organization-wide work retrieval or agent access. No preview features are required.
+Before delivery, confirm GA status, licenses, tenant policy, Work IQ grounding for weekly closeout, and Copilot in Excel analysis/editing capabilities for Survey insights in the exact attendee experience. Analyst access is needed only for the optional extension. Basic chat alone does not guarantee organization-wide work retrieval or agent access. No preview features are required.
 
-In Excel, use a working copy in an approved location (OneDrive/SharePoint is a practical route). Confirm save destination and AutoSave settings; do not claim AutoSave is universally required. The workbook is already a table. Open the Copilot pane and use available analysis controls; allow edits only to a new analysis sheet when needed. Preserve the source table and independently check generated formulas, filters, PivotTables and charts.
+In Excel, open the working copy from work OneDrive. Confirm save destination and AutoSave settings; do not claim AutoSave is universally required. The workbook is already a table. Open the Copilot pane and use available analysis controls; allow edits only to new analysis/dashboard sheets when needed. Preserve the source table and independently check generated formulas, filters, PivotTables and charts. Microsoft documents editable charts, PivotTables, dashboards and text-theme analysis in Copilot in Excel. If editing is unavailable, request exact setup steps and build the dashboard manually rather than claiming it was created by Copilot.
 
-Analyst is accessed under Agents in Microsoft 365 Copilot; attach the workbook using + / Attach content. It is a Microsoft-provided agent for licensed users and can be blocked by tenant policy. If unavailable, use attached-file prompts in Chat, label that route accurately, and verify numerical results in ordinary Excel. If Excel Copilot is unavailable, use manual filters/PivotTables. Never claim an unavailable app/agent performed an analysis.
+Analyst is accessed under Agents in Microsoft 365 Copilot; attach the workbook using + / Attach content. It is a Microsoft-provided agent for licensed users and can be blocked by tenant policy. If unavailable, skip the optional extension. If Excel Copilot is unavailable, use manual filters/PivotTables. Never claim an unavailable app/agent performed an analysis.
 
 Weekly closeout uses attendees' approved work with no synthetic route in the activity. For leave-behind labs, approved work remains the preferred input; collapsed synthetic TXT fallbacks provide a source-only route when work content is unavailable or inappropriate. The survey workbook is the explicit exception: it is the lead input.
 
@@ -108,6 +108,8 @@ Live-lab documentation reviewed October 16, 2026; Chat, Word and meeting guidanc
 - [Catch up on work](https://support.microsoft.com/en-us/microsoft-365-copilot/catch-up-on-work-quickly-using-microsoft-365-copilot-chat)
 - [Grounding and source limitations](https://support.microsoft.com/en-us/microsoft-365-copilot/what-information-does-copilot-use-to-answer-my-prompt)
 - [Copilot in Excel](https://support.microsoft.com/en-us/excel/copilot/get-started-with-copilot-in-excel) and [Excel tips/save settings](https://support.microsoft.com/en-us/excel/copilot/copilot-in-excel-tips)
+- [Excel charts and PivotTables](https://support.microsoft.com/en-us/excel/copilot/visualize-your-data-with-copilot-in-excel) and [Excel data/text insights](https://support.microsoft.com/en-us/excel/copilot/data-insights-with-copilot-in-excel) — checked for the Excel-first flow on October 21, 2026; tenant availability must still be confirmed.
+- [Create a presentation with Copilot in PowerPoint](https://support.microsoft.com/en-us/powerpoint/copilot/create-a-new-presentation-with-copilot-in-powerpoint) and [PowerPoint file references](https://support.microsoft.com/en-us/office/add-topics-to-your-existing-powerpoint-presentation-with-copilot) — the optional survey deck runs in PowerPoint with an explicit workbook reference. The latter currently labels Excel-file support preview, so it is gated out of GA-only live delivery.
 - [Analyst setup and attachments](https://support.microsoft.com/en-us/microsoft-365-copilot/get-started-with-analyst-in-microsoft-365-copilot)
 - [Agent installation, licensing and governance](https://learn.microsoft.com/en-us/microsoft-365/copilot/copilot-agent-install)
 - [Draft and add content with Copilot in Word](https://support.microsoft.com/en-us/word/copilot/draft-and-add-content-with-copilot-in-word)
