@@ -248,7 +248,8 @@ test("survey runs in Excel with an editable dashboard and a separate optional An
 test("live prompts cover HR closeout and workbook questions on the correct surfaces", () => {
   const week = html.match(/<section id="week"[\s\S]*?<\/section>/)[0];
   const survey = html.match(/<section id="survey"[\s\S]*?<\/section>/)[0];
-  assert.match(week, /complete inbox audit/);
+  const catchup = week.match(/<pre id="week-catchup">([\s\S]*?)<\/pre>/)[1];
+  assert.doesNotMatch(catchup, /Exclude restricted personnel matters|Flag retrieval gaps|complete inbox audit/);
   assert.match(week, /Do not infer someone ignored a message/);
   assert.match(week, /Leave it unsent/);
   assert.doesNotMatch(survey, /shared demo is the lead/i);
