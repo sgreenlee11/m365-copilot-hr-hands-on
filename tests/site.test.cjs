@@ -240,6 +240,7 @@ function environment({ saved = "{}", storageFails = false, copyFails = false } =
     return { id, dataset: {}, textContent: "", checked: false, open: false, attrs: {},
       addEventListener(event, callback) { this[event] = callback; },
       setAttribute(name, value) { this.attrs[name] = value; },
+      getAttribute(name) { return this.attrs[name]; },
       removeAttribute(name) { delete this.attrs[name]; },
       querySelector() { return { textContent: this.id }; },
       focus() { this.focused = true; }
@@ -257,12 +258,20 @@ function environment({ saved = "{}", storageFails = false, copyFails = false } =
     return Object.assign(element(), { dataset: { copy: id } });
   });
   const sourceButtons = [...html.matchAll(/<button[^>]+data-source="([^"]+)"/g)].map(([, name]) => Object.assign(element(), { dataset: { source: name } }));
+  const downloadLinks = [...html.matchAll(/<a href="([^"]+)" download="([^"]+)" data-download>/g)].map(([, href, filename]) =>
+    Object.assign(element(), { attrs: { href }, download: filename }));
+  const downloads = [];
+  const blobs = [];
+  const revokedUrls = [];
+  const timers = [];
   let copied = "";
   let selected = false;
   const context = {
     document: {
-      querySelectorAll(selector) { return ({ ".activity": activities, "nav a": links, "[data-complete]": checks, "[data-copy]": copyButtons, "[data-source]": sourceButtons, "details": details })[selector]; },
+      querySelectorAll(selector) { return ({ ".activity": activities, "nav a": links, "[data-complete]": checks, "[data-copy]": copyButtons, "[data-source]": sourceButtons, "[data-download]": downloadLinks, "details": details })[selector]; },
       getElementById(id) { return elements.get(id); },
+      body: { appendChild(node) { node.attached = true; } },
+      createElement() { return { click() { assert.ok(this.attached); downloads.push(this); }, remove() { this.attached = false; } }; },
       createRange() { return { selectNodeContents() { selected = true; } }; }
     },
     location: { hash: "" },
@@ -273,12 +282,54 @@ function environment({ saved = "{}", storageFails = false, copyFails = false } =
       removeItem() { if (storageFails) throw new Error("Denied"); saved = null; }
     },
     navigator: { clipboard: { async writeText(text) { if (copyFails) throw new Error("Denied"); copied = text; } } },
-    fetch: async (name) => ({ ok: true, text: async () => fs.readFileSync(path.join(root, name), "utf8") }),
-    setTimeout() { return 1; }, clearTimeout() {}
+    fetch: async (name) => ({ ok: true, text: async () => fs.readFileSync(path.join(root, name), "utf8"), arrayBuffer: async () => fs.readFileSync(path.join(root, name)) }),
+    Blob,
+    URL: { createObjectURL(blob) { blobs.push(blob); return `blob:test-${blobs.length}`; }, revokeObjectURL(url) { revokedUrls.push(url); } },
+    setTimeout(callback, delay) { timers.push({ callback, delay }); return timers.length; }, clearTimeout() {}
   };
   vm.runInNewContext(script, context);
-  return { elements, activities, links, checks, details, copyButtons, sourceButtons, context, listeners, copied: () => copied, selected: () => selected, saved: () => saved };
+  return { elements, activities, links, checks, details, copyButtons, sourceButtons, downloadLinks, downloads, blobs, revokedUrls, timers, context, listeners, copied: () => copied, selected: () => selected, saved: () => saved };
 }
+
+test("both workbook links download unchanged binary data instead of navigating to a viewer", async () => {
+  const env = environment();
+  assert.equal(env.downloadLinks.length, 2);
+  const filename = "FY27-Q2-QC-Details-Fictitious.xlsx";
+  const original = fs.readFileSync(path.join(root, "assets", filename));
+  for (const link of env.downloadLinks) {
+    let prevented = false;
+    await link.click({ preventDefault() { prevented = true; } });
+    assert.ok(prevented);
+    assert.equal(link.getAttribute("aria-busy"), undefined);
+    const download = env.downloads.at(-1);
+    assert.match(download.href, /^blob:/);
+    assert.equal(download.download, filename);
+    assert.equal(download.attached, false);
+    assert.equal(env.blobs.at(-1).type, "application/octet-stream");
+    assert.deepEqual(Buffer.from(await env.blobs.at(-1).arrayBuffer()), original);
+  }
+  assert.match(env.elements.get("status").textContent, /work OneDrive/);
+  env.timers.filter((timer) => timer.delay === 60000).forEach((timer) => timer.callback());
+  assert.deepEqual(env.revokedUrls, ["blob:test-1", "blob:test-2"]);
+  const survey = html.match(/<section id="survey"[\s\S]*?<\/section>/)[0];
+  assert.match(survey, /After downloading:[\s\S]*move the file into your work OneDrive/);
+});
+
+test("workbook download failures are explicit and do not open the source link", async () => {
+  for (const failure of ["network", "http"]) {
+    const env = environment();
+    env.context.fetch = async () => {
+      if (failure === "network") throw new Error("Offline");
+      return { ok: false, status: 404 };
+    };
+    let prevented = false;
+    await env.downloadLinks[0].click({ preventDefault() { prevented = true; } });
+    assert.ok(prevented);
+    assert.equal(env.downloads.length, 0);
+    assert.equal(env.downloadLinks[0].getAttribute("aria-busy"), undefined);
+    assert.match(env.elements.get("status").textContent, /could not be downloaded.*Save link as/);
+  }
+});
 
 test("printing expands fallbacks and finishers, then restores their state", () => {
   const env = environment();

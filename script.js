@@ -111,6 +111,36 @@ document.querySelectorAll("[data-source]").forEach((button) => {
   });
 });
 
+document.querySelectorAll("[data-download]").forEach((link) => {
+  link.addEventListener("click", async (event) => {
+    event.preventDefault();
+    if (link.getAttribute("aria-busy") === "true") return;
+    link.setAttribute("aria-busy", "true");
+    try {
+      const response = await fetch(link.getAttribute("href"));
+      if (!response.ok) throw new Error(`Download request failed: ${response.status}`);
+      const blob = new Blob([await response.arrayBuffer()], { type: "application/octet-stream" });
+      const url = URL.createObjectURL(blob);
+      try {
+        const download = document.createElement("a");
+        download.href = url;
+        download.download = link.download;
+        download.hidden = true;
+        document.body.appendChild(download);
+        download.click();
+        download.remove();
+        announce("Workbook download requested. Move the downloaded file into your work OneDrive before opening it in Excel.");
+      } finally {
+        setTimeout(() => URL.revokeObjectURL(url), 60000);
+      }
+    } catch {
+      announce("The workbook could not be downloaded. Check your connection and try again. You can also right-click its link and choose Save link as.");
+    } finally {
+      link.removeAttribute("aria-busy");
+    }
+  });
+});
+
 let detailsBeforePrint = [];
 window.addEventListener("beforeprint", () => {
   detailsBeforePrint = [...document.querySelectorAll("details")].map((detail) => [detail, detail.open]);
